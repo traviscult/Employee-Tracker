@@ -23,7 +23,7 @@ connection.connect(function (err) {
   start();
 });
 
-const start = () => {
+const start = async () => {
   inquirer
     .prompt({
       name: 'action',
@@ -90,82 +90,45 @@ const employeeByManager = () => {
 }
 
 const addEmployee = () => {
-  console.log("a new emloyee is being added")
-  let questions = [{
-    name: 'firstName',
-    type: 'input',
-    message: 'Please enter employee first name'
-  }, {
-    name: 'lastName',
-    type: 'input',
-    message: 'Please enter employee last name'
-  }, {
-    name: 'empManagerId',
-    type: 'input',
-    message: 'Please enter employee manager id'
-  }, {
-    name: 'empManagerId',
-    type: 'input',
-    message: 'Please enter employee manager id'
-  }, {
-    name: 'empTitle',
-    type: 'input',
-    message: 'Please enter employee title'
-  }, {
-    name: 'empSalary',
-    type: 'input',
-    message: 'Please enter employee salary'
-  }, {
-    name: 'empTitle',
-    type: 'input',
-    message: 'Please enter employee title'
-  }, {
-    name: 'empDepartment',
-    type: 'input',
-    message: 'Please enter employee department'
-  }]
-  inquirer.prompt(questions, addEmployee.answers).then(answers => {
-    console.log(answers);
-  });
-  // start();
-};
-
-
-// inquirer
-//   .prompt({
-//     name: 'firstName',
-//     type: 'input',
-//     message: 'Please enter employee first name'
-//   }, {
-//     name: 'lastName',
-//     type: 'input',
-//     message: 'Please enter employee last name'
-//   }, {
-//     name: 'empManagerId',
-//     type: 'input',
-//     message: 'Please enter employee manager id'
-//   }, {
-//     name: 'empManagerId',
-//     type: 'input',
-//     message: 'Please enter employee manager id'
-//   }, {
-//     name: 'empTitle',
-//     type: 'input',
-//     message: 'Please enter employee title'
-//   }, {
-//     name: 'empSalary',
-//     type: 'input',
-//     message: 'Please enter employee salary'
-//   }, {
-//     name: 'empTitle',
-//     type: 'input',
-//     message: 'Please enter employee title'
-//   }, {
-//     name: 'empDepartment',
-//     type: 'input',
-//     message: 'Please enter employee department'
-//   })
-
+ inquirer
+    .prompt([{
+      name: 'firstName',
+      type: 'input',
+      message: 'Please enter employee first name'
+    }, {
+      name: 'lastName',
+      type: 'input',
+      message: 'Please enter employee last name'
+    }, {
+      name: 'empManagerId',
+      type: 'input',
+      message: 'Please enter employee manager id'
+    }, {
+      name: 'empManagerId',
+      type: 'input',
+      message: 'Please enter employee manager id'
+    }, {
+      name: 'empTitle',
+      type: 'input',
+      message: 'Please enter employee title'
+    }, {
+      name: 'empSalary',
+      type: 'input',
+      message: 'Please enter employee salary'
+    }, {
+      name: 'empTitle',
+      type: 'input',
+      message: 'Please enter employee title'
+    }, {
+      name: 'empDepartment',
+      type: 'input',
+      message: 'Please enter employee department'
+    }]).then(answers => {
+      console.log(answers);
+      start();
+    })
+    
+}
 
 
 const employeeManagerAscii = () => {
