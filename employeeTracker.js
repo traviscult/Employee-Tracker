@@ -19,6 +19,7 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
   if (err) throw err;
   // run the start function after the connection is made to prompt the user
+  employeeManagerAscii()
   start();
 });
 
@@ -73,3 +74,87 @@ const viewEmployees = () => {
     start();
   });
 };
+
+const employeeByDepartment = () => {
+  connection.query('SELECT * FROM department', (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    start();
+  })
+
+}
+
+const employeeByManager = () => {
+  console.log("Manager is being requested")
+  start();
+}
+
+const addEmployee = () => {
+  console.log("a new emloyee is being added")
+  inquirer
+    .prompt({
+      name: 'firstName',
+      type: 'input',
+      message: 'Please enter employee first name'
+    }, {
+      name: 'lastName',
+      type: 'input',
+      message: 'Please enter employee last name'
+    }, {
+      name: 'empManagerId',
+      type: 'input',
+      message: 'Please enter employee manager id'
+    }, {
+      name: 'empManagerId',
+      type: 'input',
+      message: 'Please enter employee manager id'
+    }, {
+      name: 'empTitle',
+      type: 'input',
+      message: 'Please enter employee title'
+    }, {
+      name: 'empSalary',
+      type: 'input',
+      message: 'Please enter employee salary'
+    }, {
+      name: 'empTitle',
+      type: 'input',
+      message: 'Please enter employee title'
+    }, {
+      name: 'empDepartment',
+      type: 'input',
+      message: 'Please enter employee department'
+    })
+    .then(input => {
+      console.log(input);
+    })
+    // start();
+}
+
+
+const employeeManagerAscii = () =>{
+  console.log(`   ________                          __                                               `)
+  console.log(`  /        |                        /  |                                              `)
+  console.log(`  $$$$$$$$/  _____  ____    ______  $$ |  ______   __    __   ______    ______        `)
+  console.log(`  $$ |__    /     \/    \  /      \ $$ | /      \ /  |  /  | /      \  /      \       `)
+  console.log(`  $$    |   $$$$$$ $$$$  |/$$$$$$  |$$ |/$$$$$$  |$$ |  $$ |/$$$$$$  |/$$$$$$  |      `)
+  console.log(`  $$$$$/    $$ | $$ | $$ |$$ |  $$ |$$ |$$ |  $$ |$$ |  $$ |$$    $$ |$$    $$ |      `)
+  console.log(`  $$ |_____ $$ | $$ | $$ |$$ |__$$ |$$ |$$ \__$$ |$$ \__$$ |$$$$$$$$/ $$$$$$$$/       `)
+  console.log(`  $$       |$$ | $$ | $$ |$$    $$/ $$ |$$    $$/ $$    $$ |$$       |$$       |      `)
+  console.log(`  $$$$$$$$/ $$/  $$/  $$/ $$$$$$$/  $$/  $$$$$$/   $$$$$$$ | $$$$$$$/  $$$$$$$/       `)
+  console.log(`                          $$ |                    /  \__$$ |                          `)
+  console.log(`                          $$ |                    $$    $$/                           `)
+  console.log(`                          $$/                      $$$$$$/                            `)
+  console.log(`   __       __                                                                        `)
+  console.log(`  /  \     /  |                                                                       `)
+  console.log(`  $$  \   /$$ |  ______   _______    ______    ______    ______    ______             `)
+  console.log(`  $$$  \ /$$$ | /      \ /       \  /      \  /      \  /      \  /      \            `)
+  console.log(`  $$$$  /$$$$ | $$$$$$  |$$$$$$$  | $$$$$$  |/$$$$$$  |/$$$$$$  |/$$$$$$  |           `)
+  console.log(`  $$ $$ $$/$$ | /    $$ |$$ |  $$ | /    $$ |$$ |  $$ |$$    $$ |$$ |  $$/            `)
+  console.log(`  $$ |$$$/ $$ |/$$$$$$$ |$$ |  $$ |/$$$$$$$ |$$ \__$$ |$$$$$$$$/ $$ |                 `)
+  console.log(`  $$ | $/  $$ |$$    $$ |$$ |  $$ |$$    $$ |$$    $$ |$$       |$$ |                 `)
+  console.log(`  $$/      $$/  $$$$$$$/ $$/   $$/  $$$$$$$/  $$$$$$$ | $$$$$$$/ $$/                  `)
+  console.log(`                                             /  \__$$ |                               `)
+  console.log(`                                             $$    $$/                                `)
+  console.log(`                                              $$$$$$/                                  `)
+}
