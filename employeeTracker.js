@@ -86,11 +86,19 @@ const employeeByDepartment = () => {
 
 const employeeByManager = () => {
   console.log("Manager is being requested")
+  connection.query('SELECT * FROM employee WHERE manager_id IS NULL', (err, res) => {
+    if (err) throw err;
+    start();
+  })
+}
+
+const removeEmployee = () => {
+  console.log('I am going to remove an employee')
   start();
 }
 
 const addEmployee = () => {
- inquirer
+  inquirer
     .prompt([{
       name: 'firstName',
       type: 'input',
@@ -121,14 +129,36 @@ const addEmployee = () => {
       message: 'Please enter employee title'
     }, {
       name: 'empDepartment',
-      type: 'input',
-      message: 'Please enter employee department'
+      type: 'list',
+      message: 'Please select employee department',
+      choices: ['Sales', 'Engineering', 'Finance', 'Legal']
     }]).then(answers => {
       console.log(answers);
       start();
     })
-    
+
 }
+
+const updateEmployeeRole = () => {
+  console.log('updating employee role')
+  start();
+}
+
+
+const updateEmployeeManager = () => {
+  console.log('updating employee manager')
+  start();
+}
+
+const viewRoles = () => {
+  console.log('Show employee by role')
+  connection.query('SELECT * FROM employee WHERE role IS ?', (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    start();
+  })
+}
+
 
 
 const employeeManagerAscii = () => {
