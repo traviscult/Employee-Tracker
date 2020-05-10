@@ -27,9 +27,6 @@ CREATE TABLE department (
      CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee (id)
  );
 
-
-
-
 SELECT * FROM department;
 SELECT * FROM role;
 SELECT * FROM employee;

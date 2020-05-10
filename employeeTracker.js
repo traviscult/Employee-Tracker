@@ -29,7 +29,7 @@ const start = () => {
       name: 'action',
       type: 'list',
       message: 'What would you like to do?',
-      choices: ['View all employees', 'View all employees by department', 'View all employees by manager', 'Add employee', 'Remove employee', 'Update employee role', 'Update employee manager', 'View all roles', 'Exit']
+      choices: ['View all employees', 'View all employees by department', 'Add employee', 'Remove employee', 'Update employee role', 'View all roles', 'Exit']
     })
     .then(answer => {
       switch (answer.action) {
@@ -39,9 +39,9 @@ const start = () => {
         case 'View all employees by department':
           employeeByDepartment();
           break;
-        case 'View all employees by manager':
-          employeeByManager();
-          break;
+          // case 'View all employees by manager':
+          //   employeeByManager();
+          //   break;
         case 'Add employee':
           addEmployee();
           break;
@@ -54,9 +54,9 @@ const start = () => {
         case 'Update employee role':
           updateEmployeeRole();
           break;
-        case 'Update employee manager':
-          updateEmployeeManager();
-          break;
+          // case 'Update employee manager':
+          //   updateEmployeeManager();
+          //   break;
         case 'View all roles':
           viewRoles();
           break;
@@ -68,9 +68,6 @@ const start = () => {
 };
 
 const viewEmployees = () => {
-  // connection.query("SELECT employee.first_name, role.title, department.name FROM (( employee LEFT JOIN role ON employee.role_id=role.title) LEFT JOIN department ON role.department_id=department.id)",(err, res) => {
-  //   if (err) throw err;
-  //   console.table(res);
   connection.query('SELECT * FROM employee', (err, res) => {
     if (err) throw err;
     console.table(res);
@@ -87,43 +84,68 @@ const employeeByDepartment = () => {
 
 }
 
-const employeeByManager = () => {
-  console.log("Manager is being requested")
-  connection.query('SELECT * FROM employee WHERE manager_id IS (?)', (err, res) => {
+const removeEmployee = () => {
+  console.log('I am going to remove an employee')
+  connection.query("SELECT * FROM employee", (err, res) => {
     if (err) throw err;
-    start();
+
+    inquirer.prompt([{
+        type: "list",
+        name: "name",
+        message: "Which employee would you like to remove",
+        choices: () => {
+          let choiceArray = [];
+          for (let i = 0; i < res.lenght; i++) {
+            choiceArray.push(res[i].first_name + " " + res[i].last_name);
+          }
+          return choiceArray
+        },
+      }])
+      .then((answer) => {
+        let fullName = answer.name;
+        let remove = fullName.split(" ");
+
+        connection.query(
+          `DELETE FROM employee WHERE first_name = "${remove[0]}" AND last_name = "${remove[1]}"`,
+          (err) => {
+            if (err) throw err;
+            console.log("removed successfully");
+            start();
+          }
+        )
+      })
   })
 }
 
-const removeEmployee = () => {
-  console.log('I am going to remove an employee')
-  start();
-}
 
 const addEmployee = () => {
+  console.log("you are about to add an epmloyee")
+
+
   inquirer
     .prompt([{
-      name: 'first_name',
-      type: 'input',
-      message: 'Please enter employee first name'
-    }, {
-      name: 'last_name',
-      type: 'input',
-      message: 'Please enter employee last name'
-    }, {
-      name: 'role_id',
-      type: 'input',
-      message: 'Please enter employee role id'
-    }, 
-    {
-      name: 'manager_id',
-      type: 'list',
-      choices: [0,1,2,3,4,5]
-    } 
-  ]).then(function(answer) {
+        name: 'first_name',
+        type: 'input',
+        message: 'Please enter employee first name'
+      }, {
+        name: 'last_name',
+        type: 'input',
+        message: 'Please enter employee last name'
+      },
+      {
+        name: 'role_id',
+        type: 'input',
+        message: 'Please enter employee role id'
+      },
+      {
+        name: 'manager_id',
+        type: 'list',
+        choices: [0, 1, 2, 3, 4, 5]
+      }
+    ]).then(function (answer) {
       console.log(answer);
-      connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answer.first_name}", "${answer.last_name}", "${answer.role_id}", "${answer.manager_id}")`, function(err,res){
-        if(err) throw err
+      connection.query(`INSERT INTO employee (first_name, last_name, manager_id) VALUES ("${answer.first_name}", "${answer.last_name}", ${answer.manager_id}")`, function (err, res) {
+        if (err) throw err
       });
       start();
     })
@@ -136,11 +158,6 @@ const updateEmployeeRole = () => {
 }
 
 
-const updateEmployeeManager = () => {
-  console.log('updating employee manager')
-  start();
-}
-
 const viewRoles = () => {
   console.log('Show employee by role')
   connection.query('SELECT * FROM role', (err, res) => {
@@ -150,6 +167,18 @@ const viewRoles = () => {
   });
 };
 
+// const employeeByManager = () => {
+//   console.log("Manager is being requested")
+//   connection.query('SELECT * FROM employee WHERE manager_id IS (?)', (err, res) => {
+//     if (err) throw err;
+//     start();
+//   })
+// }
+
+// const updateEmployeeManager = () => {
+//   console.log('updating employee manager')
+//   start();
+// }
 
 
 const employeeManagerAscii = () => {
