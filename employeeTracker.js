@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql');
 
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: "localhost",
 
   // Your port; if not 3306
@@ -23,7 +23,7 @@ connection.connect(function (err) {
   start();
 });
 
-const start = async () => {
+const start = () => {
   inquirer
     .prompt({
       name: 'action',
@@ -68,6 +68,9 @@ const start = async () => {
 };
 
 const viewEmployees = () => {
+  // connection.query("SELECT employee.first_name, role.title, department.name FROM (( employee LEFT JOIN role ON employee.role_id=role.title) LEFT JOIN department ON role.department_id=department.id)",(err, res) => {
+  //   if (err) throw err;
+  //   console.table(res);
   connection.query('SELECT * FROM employee', (err, res) => {
     if (err) throw err;
     console.table(res);
@@ -100,40 +103,28 @@ const removeEmployee = () => {
 const addEmployee = () => {
   inquirer
     .prompt([{
-      name: 'firstName',
+      name: 'first_name',
       type: 'input',
       message: 'Please enter employee first name'
     }, {
-      name: 'lastName',
+      name: 'last_name',
       type: 'input',
       message: 'Please enter employee last name'
     }, {
-      name: 'empManagerId',
+      name: 'role_id',
       type: 'input',
-      message: 'Please enter employee manager id'
-    }, {
-      name: 'empManagerId',
-      type: 'input',
-      message: 'Please enter employee manager id'
-    }, {
-      name: 'empTitle',
-      type: 'input',
-      message: 'Please enter employee title'
-    }, {
-      name: 'empSalary',
-      type: 'input',
-      message: 'Please enter employee salary'
-    }, {
-      name: 'empTitle',
-      type: 'input',
-      message: 'Please enter employee title'
-    }, {
-      name: 'empDepartment',
+      message: 'Please enter employee role id'
+    }, 
+    {
+      name: 'manager_id',
       type: 'list',
-      message: 'Please select employee department',
-      choices: ['Sales', 'Engineering', 'Finance', 'Legal']
-    }]).then(answers => {
-      console.log(answers);
+      choices: [0,1,2,3,4,5]
+    } 
+  ]).then(function(answer) {
+      console.log(answer);
+      connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answer.first_name}", "${answer.last_name}", "${answer.role_id}", "${answer.manager_id}")`, function(err,res){
+        if(err) throw err
+      });
       start();
     })
 
@@ -152,12 +143,12 @@ const updateEmployeeManager = () => {
 
 const viewRoles = () => {
   console.log('Show employee by role')
-  connection.query('SELECT * FROM employee WHERE role IS ?', (err, res) => {
+  connection.query('SELECT * FROM role', (err, res) => {
     if (err) throw err;
     console.table(res);
     start();
-  })
-}
+  });
+};
 
 
 

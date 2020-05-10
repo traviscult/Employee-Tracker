@@ -26,16 +26,8 @@ VALUES
     ('Travis', 'Cultreri', 3, NULL),
     ('Noah', 'King', 4, 3),
     ('Kyle', 'Varni', 5, NULL),
-    ('Eddie', 'James', 6, 5),
+    ('Eddie', 'Van Halen', 6, 5),
     ('James', 'Hendrix', 7, NULL),
     ('Keith', 'Richards', 8, 7);
 
--- INSERT INTO employee (first_name, last_name, role_id, manager_id)
--- VALUES ("Travis", "Cultreri", 1, null);
-
--- INSERT INTO role (title, salary, department_id)
--- VALUES ("Full Stack Dev", "65000", 1);
-
--- INSERT INTO department (name)
--- VALUES ("Engineering");
 
