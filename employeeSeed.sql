@@ -1,15 +1,5 @@
 USE employeeDB;
 
--- INSERT INTO employee (first_name, last_name, role_id, manager_id)
--- VALUES ("Travis", "Cultreri", 1, null);
-
--- INSERT INTO role (title, salary, department_id)
--- VALUES ("Full Stack Dev", "65000", 1);
-
--- INSERT INTO department (name)
--- VALUES ("Engineering");
-
-
 INSERT INTO department
     (name)
 VALUES
@@ -31,16 +21,21 @@ VALUES
 INSERT INTO employee
     (first_name, last_name, role_id, manager_id)
 VALUES
-    ('John', 'Doe', 1, NULL),
-    ('Mike', 'Chan', 2, 1),
-    ('Ashley', 'Rodriguez', 3, NULL),
-    ('Kevin', 'Tupik', 4, 3),
-    ('Kunal', 'Singh', 5, NULL),
-    ('Malia', 'Brown', 6, 5),
-    ('Sarah', 'Lourd', 7, NULL),
-    ('Tom', 'Allen', 8, 7);
+    ('John', 'Smith', 1, NULL),
+    ('Jane', 'Doe', 2, 1),
+    ('Travis', 'Cultreri', 3, NULL),
+    ('Noah', 'King', 4, 3),
+    ('Kyle', 'Varni', 5, NULL),
+    ('Eddie', 'James', 6, 5),
+    ('James', 'Hendrix', 7, NULL),
+    ('Keith', 'Richards', 8, 7);
 
+-- INSERT INTO employee (first_name, last_name, role_id, manager_id)
+-- VALUES ("Travis", "Cultreri", 1, null);
 
+-- INSERT INTO role (title, salary, department_id)
+-- VALUES ("Full Stack Dev", "65000", 1);
 
-
+-- INSERT INTO department (name)
+-- VALUES ("Engineering");
 

@@ -86,7 +86,7 @@ const employeeByDepartment = () => {
 
 const employeeByManager = () => {
   console.log("Manager is being requested")
-  connection.query('SELECT * FROM employee WHERE manager_id IS NULL', (err, res) => {
+  connection.query('SELECT * FROM employee WHERE manager_id IS (?)', (err, res) => {
     if (err) throw err;
     start();
   })

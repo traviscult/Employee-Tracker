@@ -27,6 +27,22 @@ CREATE TABLE employee (
   CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
 
+
+-- CREATE TABLE department (
+--     id INT NOT NULL AUTO_INCREMENT,
+--     department_name VARCHAR(30) NOT NULL,
+--     PRIMARY KEY (id)
+-- );
+
+-- CREATE TABLE role (
+--     id INT NOT NULL AUTO_INCREMENT,
+--     title VARCHAR(30) NOT NULL,
+--     salary DECIMAL (10,2) NOT NULL,
+--     department_id INT,
+--     PRIMARY KEY (id),
+--     CONSTRAINT fk_departmentid FOREIGN KEY (department_id) REFERENCES department (id)
+-- );
+
 -- CREATE TABLE employee (
 --     id INT NOT NULL AUTO_INCREMENT,
 --     first_name VARCHAR(30) NOT NULL,
@@ -38,20 +54,6 @@ CREATE TABLE employee (
 --     CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee (id)
 -- );
 
--- CREATE TABLE employee_role (
---     id INT NOT NULL AUTO_INCREMENT,
---     title VARCHAR(30) NOT NULL,
---     salary DECIMAL (10,2) NOT NULL,
---     department_id INT,
---     PRIMARY KEY (id),
---     CONSTRAINT fk_departmentid FOREIGN KEY (department_id) REFERENCES department (id)
--- );
-
--- CREATE TABLE department (
---     id INT NOT NULL AUTO_INCREMENT,
---     department_name VARCHAR(30) NOT NULL,
---     PRIMARY KEY (id)
--- );
 
 SELECT * FROM department;
 SELECT * FROM role;
