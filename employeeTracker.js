@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql');
+// const consoleTable = require ("console.table")
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -68,7 +69,7 @@ const start = () => {
 };
 
 const viewEmployees = () => {
-  connection.query('SELECT * FROM employee', (err, res) => {
+  connection.query('SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id INNER JOIN department ON role.department_id=department.id', (err, res) => {
     if (err) throw err;
     console.table(res);
     start();
@@ -94,11 +95,11 @@ const removeEmployee = () => {
         name: "name",
         message: "Which employee would you like to remove",
         choices: () => {
-          let choiceArray = [];
+          let choicesArray = [];
           for (let i = 0; i < res.lenght; i++) {
-            choiceArray.push(res[i].first_name + " " + res[i].last_name);
+            choicesArray.push(res[i].first_name + " " + res[i].last_name);
           }
-          return choiceArray
+          return choicesArray
         },
       }])
       .then((answer) => {
