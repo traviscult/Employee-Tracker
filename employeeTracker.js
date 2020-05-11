@@ -24,21 +24,21 @@ connection.connect(function (err) {
   start();
 });
 
+// Prompt user on start 
 const start = () => {
-  inquirer
-    .prompt({
+  inquirer.prompt({
       name: 'action',
       type: 'list',
       message: 'What would you like to do?',
-      choices: ['View all employees', 'View all employees by department', 'Add employee', 'Remove employee', 'Update employee role', 'View all roles', 'Exit']
+      choices: ['View all employees', 'View all departments', 'Add employee', 'Remove employee', 'Update employee role', 'View all roles', 'Exit']
     })
     .then(answer => {
       switch (answer.action) {
         case 'View all employees':
           viewEmployees();
           break;
-        case 'View all employees by department':
-          employeeByDepartment();
+        case 'View all departments':
+          viewDepartment();
           break;
           // case 'View all employees by manager':
           //   employeeByManager();
@@ -68,6 +68,7 @@ const start = () => {
     });
 };
 
+// view all employees based on user input
 const viewEmployees = () => {
   connection.query('SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id INNER JOIN department ON role.department_id=department.id', (err, res) => {
     if (err) throw err;
@@ -76,7 +77,8 @@ const viewEmployees = () => {
   });
 };
 
-const employeeByDepartment = () => {
+// view all departments based on user input
+const viewDepartment = () => {
   connection.query('SELECT * FROM department', (err, res) => {
     if (err) throw err;
     console.table(res);
@@ -96,21 +98,20 @@ const removeEmployee = () => {
         message: "Which employee would you like to remove",
         choices: () => {
           let choicesArray = [];
-          for (let i = 0; i < res.lenght; i++) {
+          for (let i = 0; i < res.length; i++){
             choicesArray.push(res[i].first_name + " " + res[i].last_name);
           }
           return choicesArray
         },
-      }])
+      }
+    ])
       .then((answer) => {
-        let fullName = answer.name;
-        let remove = fullName.split(" ");
+        let employeeName = answer.name;
+        let remove = employeeName.split(" ");
 
-        connection.query(
-          `DELETE FROM employee WHERE first_name = "${remove[0]}" AND last_name = "${remove[1]}"`,
-          (err) => {
+        connection.query(`DELETE FROM employee WHERE first_name = "${remove[0]}" AND last_name = "${remove[1]}"`, (err) => {
             if (err) throw err;
-            console.log("removed successfully");
+            console.log("employee removed");
             start();
           }
         )
@@ -122,35 +123,39 @@ const removeEmployee = () => {
 const addEmployee = () => {
   console.log("you are about to add an epmloyee")
 
-
-  inquirer
-    .prompt([{
-        name: 'first_name',
-        type: 'input',
-        message: 'Please enter employee first name'
-      }, {
-        name: 'last_name',
-        type: 'input',
-        message: 'Please enter employee last name'
-      },
-      {
-        name: 'role_id',
-        type: 'input',
-        message: 'Please enter employee role id'
-      },
-      {
-        name: 'manager_id',
-        type: 'list',
-        choices: [0, 1, 2, 3, 4, 5]
-      }
-    ]).then(function (answer) {
-      console.log(answer);
-      connection.query(`INSERT INTO employee (first_name, last_name, manager_id) VALUES ("${answer.first_name}", "${answer.last_name}", ${answer.manager_id}")`, function (err, res) {
-        if (err) throw err
-      });
+  inquirer.prompt([{
+      name: 'first_name',
+      type: 'input',
+      message: 'Please enter employee first name'
+    }, {
+      name: 'last_name',
+      type: 'input',
+      message: 'Please enter employee last name'
+    },
+    {
+      name: 'title',
+      type: 'input',
+      message: 'Please enter employee title'
+    },
+    {
+      name: 'salary',
+      type: 'input',
+      message: 'Please enter employee salary'
+    },
+    {
+      name: 'department',
+      type: 'list',
+      message: 'Please enter employee department',
+      choices: ["Sales", "Engineering", "Finance", "Legal"]
+    }
+  ]).then((answer) => {
+    console.log("I am being called", answer);
+    connection.query(`INSERT INTO employee (first_name, last_name) VALUES ("${answer.first_name}", "${answer.last_name}")`, `INSERT INTO role (title, salary) VALUES ("${answer.title}, ${answer.salary}")`, `INSERT INTO department (name) VALUES ("${answer.department}")`, (err, res) => {
+      if (err) throw err
+      console.table(res)
       start();
-    })
-
+    });
+  })
 }
 
 const updateEmployeeRole = () => {
