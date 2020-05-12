@@ -1,5 +1,6 @@
 # Employee-Tracker
 
+I created an in line command **C**ontent **M**anagement **S**ystems utilizing node, inquirer, and MySQL. 
 
 ## User Story
 ```

@@ -98,65 +98,74 @@ const removeEmployee = () => {
         message: "Which employee would you like to remove",
         choices: () => {
           let choicesArray = [];
-          for (let i = 0; i < res.length; i++){
+          for (let i = 0; i < res.length; i++) {
             choicesArray.push(res[i].first_name + " " + res[i].last_name);
           }
           return choicesArray
         },
-      }
-    ])
+      }])
       .then((answer) => {
         let employeeName = answer.name;
         let remove = employeeName.split(" ");
 
         connection.query(`DELETE FROM employee WHERE first_name = "${remove[0]}" AND last_name = "${remove[1]}"`, (err) => {
-            if (err) throw err;
-            console.log("employee removed");
-            start();
-          }
-        )
+          if (err) throw err;
+          console.log("employee removed");
+          start();
+        })
       })
   })
 }
 
-
+// add employee based on usre input
 const addEmployee = () => {
   console.log("you are about to add an epmloyee")
+  connection.query("SELECT * FROM employee", (err, res) => {
+    if (err) throw err;
 
-  inquirer.prompt([{
-      name: 'first_name',
-      type: 'input',
-      message: 'Please enter employee first name'
-    }, {
-      name: 'last_name',
-      type: 'input',
-      message: 'Please enter employee last name'
-    },
-    {
-      name: 'title',
-      type: 'input',
-      message: 'Please enter employee title'
-    },
-    {
-      name: 'salary',
-      type: 'input',
-      message: 'Please enter employee salary'
-    },
-    {
-      name: 'department',
-      type: 'list',
-      message: 'Please enter employee department',
-      choices: ["Sales", "Engineering", "Finance", "Legal"]
-    }
-  ]).then((answer) => {
-    console.log("I am being called", answer);
-    connection.query(`INSERT INTO employee (first_name, last_name) VALUES ("${answer.first_name}", "${answer.last_name}")`, `INSERT INTO role (title, salary) VALUES ("${answer.title}, ${answer.salary}")`, `INSERT INTO department (name) VALUES ("${answer.department}")`, (err, res) => {
-      if (err) throw err
-      console.table(res)
-      start();
+   inquirer.prompt([{
+        name: 'first_name',
+        type: 'input',
+        message: 'Please enter employee first name'
+      }, 
+      {
+        name: 'last_name',
+        type: 'input',
+        message: 'Please enter employee last name'
+      },
+      {
+        name: "role",
+        type: "list",
+        message: "Please select an employee role?",
+        choices: () => {
+          let choicesArray = res.map(employee => employee.role_id).filter(roleId => roleId )
+          console.log(choicesArray)
+          return choicesArray;
+        }
+      },
+      {
+        name: "manager",
+        type: "list",
+        message: "Please select a manager id?",
+        choices: [
+          1, 2, 3, 4, 5
+        ]
+      }
+    ])
+    .then((answer) => {
+      console.log("I am being called", answer);
+      console.log(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answer.first_name}", "${answer.last_name}", ${answer.role}, ${answer.manager})`)
+      connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answer.first_name}", "${answer.last_name}", ${answer.role}, ${answer.manager})`), (err, res) => {
+        console.log(res)
+        console.log(err)
+        if (err) throw err
+        console.log("A new employee has been added")
+        
+        start();
+      };
     });
-  })
-}
+  });
+};
 
 const updateEmployeeRole = () => {
   console.log('updating employee role')
