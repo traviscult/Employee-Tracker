@@ -161,8 +161,8 @@ const addEmployee = () => {
         if (err) throw err
         console.log("A new employee has been added")
         
-        start();
       };
+      start();
     });
   });
 };
@@ -175,9 +175,22 @@ const updateEmployeeRole = () => {
 
 const viewRoles = () => {
   console.log('Show employee by role')
-  connection.query('SELECT * FROM role', (err, res) => {
+  connection.query('SELECT * FROM employee', (err, res) => {
     if (err) throw err;
     console.table(res);
+
+    inquirer.prompt([
+      {
+        name: "name",
+        type: "list",
+        choices: () => {
+          let choicesArray = [];
+          for (let i = 0; i <res.length; i++)
+          choicesArray.push(res[i].first_name + " " + res[i].last_name);
+
+        }
+      }
+    ])
     start();
   });
 };
