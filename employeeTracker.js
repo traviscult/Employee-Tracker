@@ -147,9 +147,11 @@ const addEmployee = () => {
         name: "manager",
         type: "list",
         message: "Please select a manager id?",
-        choices: [
-          1, 2, 3, 4, 5
-        ]
+        choices: () => {
+          let choiceArray = res.map(employee => employee.manager_id).filter(managerId => managerId )
+          console.log(choiceArray)
+          return choiceArray;
+        }
       }
     ])
     .then((answer) => {
