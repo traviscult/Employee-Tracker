@@ -10,7 +10,5 @@ I want to be able to view and manage the departments, roles, and employees in my
 So that I can organize and plan my business
 ```
 
-## Usage 
-
 ## Demo
-
+![Employee Tracker Demo](/Demo/EmployeeDemo.gif)
